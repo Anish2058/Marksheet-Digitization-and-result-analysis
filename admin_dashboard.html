@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="body_style">
+    <button class="back-button" onclick="history.back()"> ← </button>
+    <div class="container">
+        <h1>ADMIN DASHBOARD</h1>
+        <div class="button-group">
+            <button id="upload-marksheet-button" class="button">Upload Marksheet</button>
+            <button id="result-analysis-button" class="button">Result Analysis</button>
+            <button id="add-users-button" class="button">Add Users</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById("upload-marksheet-button").onclick = function() {
+            window.location.href = "{% url 'marksheet_upload' %}";
+        };
+        document.getElementById("result-analysis-button").onclick = function() {
+            window.location.href = "{% url 'result_analysis' %}";
+        };
+        document.getElementById("add-users-button").onclick = function() {
+            window.location.href = "{% url 'add_users' %}";
+        };
+    </script>
+</body>
+</html>

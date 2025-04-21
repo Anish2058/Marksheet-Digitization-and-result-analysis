@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Marksheet</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="body_style">
+    <button class="back-button" onclick="history.back()"> ← </button>
+    <div class="container">
+        <h1>UPLOAD MARKSHEET</h1>
+        <!-- Notification Message -->
+        {% if uploaded_file_name %}
+            <p style="color: green; font-weight: bold;">Marksheet uploaded successfully!</p>
+        {% endif %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="button">Upload</button>
+        </form>
+    </div>
+</body>
+</html>

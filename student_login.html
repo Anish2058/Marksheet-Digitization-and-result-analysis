@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Student Login</h1>
+        <form method="post" action="{% url 'student_login' %}">
+            {% csrf_token %}
+            <label for="student_id">Enter Your Student ID:</label>
+            <input type="text" id="student_id" name="student_id" required>
+            <button type="submit" class="button">Login</button>
+        </form>
+    </div>
+</body>
+</html>

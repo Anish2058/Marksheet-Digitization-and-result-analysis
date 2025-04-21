@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ student_name }}!</h1>
+        <p>Your Student ID: {{ student_id }}</p>
+
+        <form method="post" action="{% url 'results' %}">
+            {% csrf_token %}
+            <label for="year_part">Enter Year/Part:</label>
+            <input type="text" id="year_part" name="year_part" required>
+            <button type="submit" class="button">Get Result</button>
+        </form>
+
+        {% if error %}
+            <div class="alert visible">{{ error }}</div>
+        {% endif %}
+
+        <!-- Button for Student Analysis -->
+        <a href="{% url 'student_analysis' %}" class="button">Student Analysis</a>
+    </div>
+</body>
+</html>

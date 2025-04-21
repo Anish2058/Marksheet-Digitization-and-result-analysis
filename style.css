@@ -1,0 +1,172 @@
+/* Global Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('gg.jpg'); /* Replace with your background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #333;
+}
+
+/* Container Styling */
+.container {
+    background: rgb(213, 213, 213);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 5px 17px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Heading Styling */
+h1 {
+    font-size: 2.3em;
+    margin-bottom: 20px;
+    color: #000000;
+    text-shadow: 2px 2px 5px gray;
+}
+
+/* Button Styling */
+.button {
+    background-color: hsla(218, 95%, 33%, 0.738);
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+    background-color:hsla(207, 100%, 50%, 0.738);
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Form Styling */
+form {
+    text-align: left;
+    margin-top: 20px;
+}
+
+form label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="file"],
+form select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input:focus {
+    border-color: hsla(218, 95%, 33%, 0.738);
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+    outline: none;
+}
+
+/* Button Group for Multiple Buttons */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Alerts and Messages */
+.alert {
+    background-color: #f44336; /* Red background for errors */
+    color: white;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    display: none;
+}
+
+.alert.visible {
+    display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    .button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+/* Back Button Styling */
+.back-button {
+    background-color: rgb(197, 218, 218); /* Vibrant orange */
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.back-button:hover {
+    background-color: rgb(197, 218, 218); /* Darker orange */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.back-button:active {
+    transform: scale(0.95); /* Slightly shrink when clicked */
+}
+
+/* Adjust for Mobile Screens */
+@media (max-width: 768px) {
+    .back-button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}

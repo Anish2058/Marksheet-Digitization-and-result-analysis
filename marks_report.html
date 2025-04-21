@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Marks Report</title>
+</head>
+<body>
+    <h1>Marks Report</h1>
+    <p>Name: {{ student.name }}</p>
+    <p>Student ID: {{ student.student_id }}</p>
+    <p>Programme: {{ student.programme }}</p>
+    <p>Year/Part: {{ year_part }}</p>
+
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Subject Code</th>
+                <th>Title</th>
+                <th>Marks Assessment</th>
+                <th>Marks Final</th>
+                <th>Total Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mark in marks %}
+            <tr>
+                <td>{{ mark.title.subject_code }}</td>
+                <td>{{ mark.title.title }}</td>
+                <td>{{ mark.marks_assessment }}</td>
+                <td>{{ mark.marks_final }}</td>
+                <td>{{ mark.total_marks }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

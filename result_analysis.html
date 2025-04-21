@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .chart-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .form-select,
+        .form-control {
+            margin-bottom: 20px;
+        }
+        .chart-info {
+            margin-top: 16px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            color: #555;
+        }
+        .text-placeholder {
+            font-size: 14px;
+            color: #888;
+        }
+        .large-select {
+            height: 200px; /* Increase dropdown height */
+            font-size: 16px; /* Make text larger */
+            padding: 8px; /* Add spacing */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center text-primary">Result Analysis</h1>
+        <p class="text-end text-muted">Total Students: <strong>{{ total_students }}</strong></p>
+    
+        <!-- Form for Chart Type Selection -->
+        <form method="get" class="mb-4">
+            <label for="chart_type" class="form-label">Select Chart Type:</label>
+            <select id="chart_type" name="chart_type" class="form-select" onchange="this.form.submit()">
+                <option value="programme_by_pass_fail" {% if chart_type == 'programme_by_pass_fail' %}selected{% endif %}>
+                    Programme Pass/Fail
+                </option>
+                <option value="subject_pass_fail" {% if chart_type == 'subject_pass_fail' %}selected{% endif %}>
+                    Subject Pass/Fail
+                </option>
+                <option value="total_students_pass_fail" {% if chart_type == 'total_students_pass_fail' %}selected{% endif %}>
+                    Total Students Pass/Fail
+                </option>
+                <option value="student_ranking" {% if chart_type == 'student_ranking' %}selected{% endif %}>
+                    Rank of Students
+                </option>
+                <option value="pass_percentage_over_time" {% if chart_type == 'pass_percentage_over_time' %}selected{% endif %}>
+                    Pass Percentage Trend
+                </option>
+                <option value="subject_average_marks" {% if chart_type == 'subject_average_marks' %}selected{% endif %}>
+                    Subject Average Marks
+                </option>
+                <option value="grade_distribution" {% if chart_type == 'grade_distribution' %}selected{% endif %}>
+                    Grade Distribution Analysis
+                </option>
+                <option value="assessment_vs_final" {% if chart_type == 'assessment_vs_final' %}selected{% endif %}>
+                    Assessment Vs Final Comparision
+                </option>
+                <option value="year_over_year_subject_improvement" {% if chart_type == 'year_over_year_subject_improvement' %}selected{% endif %}>
+                    year over year subject improvement
+                </option>
+                
+            </select>
+    
+            <!-- Year and Year Part Inputs -->
+            {% if chart_type == 'programme_by_pass_fail' or chart_type == 'total_students_pass_fail'%}
+            <label for="year" class="form-label">Enter Year:</label>
+            <input type="text" id="year" name="year" class="form-control" placeholder="Enter Year (e.g., 2075)"
+                value="{{ selected_year }}">
+    
+            {% if chart_type != 'student_ranking' %}
+            <label for="year_part" class="form-label">Select Year Part:</label>
+            <select id="year_part" name="year_part" class="form-select">
+                <option value="">-- Select Year Part --</option>
+                <option value="I/I" {% if selected_year_part == 'I/I' %}selected{% endif %}>I/I</option>
+                <option value="I/II" {% if selected_year_part == 'I/II' %}selected{% endif %}>I/II</option>
+                <option value="II/I" {% if selected_year_part == 'II/I' %}selected{% endif %}>II/I</option>
+                <option value="II/II" {% if selected_year_part == 'II/II' %}selected{% endif %}>II/II</option>
+                <option value="III/I" {% if selected_year_part == 'III/I' %}selected{% endif %}>III/I</option>
+                <option value="III/II" {% if selected_year_part == 'III/II' %}selected{% endif %}>III/II</option>
+                <option value="IV/I" {% if selected_year_part == 'IV/I' %}selected{% endif %}>IV/I</option>
+                <option value="IV/II" {% if selected_year_part == 'IV/II' %}selected{% endif %}>IV/II</option>
+            </select>
+            {% endif %}
+            {% endif %}
+    
+            <!-- Subject Input -->
+            {% if chart_type == 'subject_pass_fail' %}
+            <label for="subject_title" class="form-label">Select Subject:</label>
+            <select id="subject_title" name="subject_title" class="form-select">
+                <option value="">-- Select Subject --</option>
+                {% for subject in subjects %}
+                <option value="{{ subject.title__title }}" {% if selected_subject == subject.title__title %}selected{% endif %}>
+                    {{ subject.title__title }}
+                </option>
+                {% endfor %}
+            </select>
+            {% endif %}
+    
+            <!-- Add year_part dropdown to student ranking section -->
+            {% if chart_type == 'student_ranking' %}
+            <label for="year" class="form-label">Enter Year:</label>
+            <input type="text" id="year" name="year" class="form-control" 
+                placeholder="Enter Year (e.g., 2075)" value="{{ selected_year }}">
+
+            <label for="year_part" class="form-label">Select Year Part:</label>
+            <select id="year_part" name="year_part" class="form-select">
+                <option value="">-- Select Year Part --</option>
+                <option value="I/I" {% if selected_year_part == 'I/I' %}selected{% endif %}>I/I</option>
+                <option value="I/II" {% if selected_year_part == 'I/II' %}selected{% endif %}>I/II</option>
+                <option value="II/I" {% if selected_year_part == 'II/I' %}selected{% endif %}>II/I</option>
+                <option value="II/II" {% if selected_year_part == 'II/II' %}selected{% endif %}>II/II</option>
+                <option value="III/I" {% if selected_year_part == 'III/I' %}selected{% endif %}>III/I</option>
+                <option value="III/II" {% if selected_year_part == 'III/II' %}selected{% endif %}>III/II</option>
+                <option value="IV/I" {% if selected_year_part == 'IV/I' %}selected{% endif %}>IV/I</option>
+                <option value="IV/II" {% if selected_year_part == 'IV/II' %}selected{% endif %}>IV/II</option>
+            </select>
+
+            <label for="programme" class="form-label">Select Programme:</label>
+            <select id="programme" name="programme" class="form-select">
+                <option value="">-- Select Programme --</option>
+                {% for prog in programmes %}
+                <option value="{{ prog }}" {% if selected_programme == prog %}selected{% endif %}>{{ prog }}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+
+
+            <!-- For Chart 5: Pass Percentage Trend -->
+            {% if chart_type == 'pass_percentage_over_time' %}
+            <label for="programme" class="form-label">Select Programme:</label>
+            <select id="programme" name="programme" class="form-select">
+                <option value="">-- Select Programme --</option>
+                {% for prog in programmes %}
+                <option value="{{ prog }}" {% if selected_programme == prog %}selected{% endif %}>{{ prog }}</option>
+                {% endfor %}
+            </select>
+             
+                
+            <label for="start_year" class="form-label">Enter Start Year:</label>
+            <input type="text" id="start_year" name="start_year" class="form-control" placeholder="Enter Start Year (e.g., 2070)"
+                value="{{ start_year }}">
+    
+            <label for="end_year" class="form-label">Enter End Year:</label>
+            <input type="text" id="end_year" name="end_year" class="form-control" placeholder="Enter End Year (e.g., 2075)"
+                value="{{ end_year }}">
+            {% endif %}
+
+             <!-- Chart 6 -->
+             {% if chart_type == 'subject_average_marks' %}
+             <label for="subject_title" class="form-label">Select Subjects (2-5):</label>
+             <select id="subject_title" name="subject_title" class="form-select large-select" multiple required size="8">
+                 {% for subject in subjects %}
+                 <option value="{{ subject.title__title }}" {% if selected_subjects and subject.title__title in selected_subjects %}selected{% endif %}>
+                     {{ subject.title__title }}
+                 </option>
+                 {% endfor %}
+             </select>
+             <p class="text-placeholder">Hold Ctrl (Windows) / Command (Mac) to select multiple subjects.</p>
+             {% endif %}
+
+            <!-- Chart 7 -->
+             {% if chart_type == 'grade_distribution' %}
+             <div class="mb-4">
+                 <label for="subject_title" class="form-label">Select Subject:</label>
+                 <select id="subject_title" name="subject_title" class="form-select form-control-lg">
+                     <option value="">-- Select Subject --</option>
+                     {% for subject in subjects %}
+                     <option value="{{ subject.title__title }}" {% if selected_subject == subject.title__title %}selected{% endif %}>
+                         {{ subject.title__title }}
+                     </option>
+                     {% endfor %}
+                 </select>
+             </div>
+             {% endif %}
+
+
+             <!-- Chart 8 -->
+             {% if chart_type == 'assessment_vs_final' %}
+            <label for="subject_title" class="form-label">Select Subject:</label>
+            <select id="subject_title" name="subject_title" class="form-select">
+                <option value="">-- Select Subject --</option>
+                {% for subject in subjects %}
+                <option value="{{ subject.title__title }}" {% if selected_subject == subject.title__title %}selected{% endif %}>
+                    {{ subject.title__title }}
+                </option>
+                {% endfor %}
+            </select>
+            {% endif %}
+
+
+            <!-- Chart 9 -->
+            {% if chart_type == 'year_over_year_subject_improvement' %}
+            <label for="subject_title" class="form-label">Select Subject:</label>
+            <select id="subject_title" name="subject_title" class="form-select">
+                <option value="">-- Select Subject --</option>
+                {% for subject in subjects %}
+                <option value="{{ subject.titletitle }}" {% if selected_subject == subject.titletitle %}selected{% endif %}>
+                    {{ subject.title__title }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <label for="start_year" class="form-label">Enter Start Year:</label>
+            <input type="text" id="start_year" name="start_year" class="form-control" placeholder="Start Year (e.g., 2070)"
+                value="{{ start_year }}">
+            <label for="end_year" class="form-label">Enter End Year:</label>
+            <input type="text" id="end_year" name="end_year" class="form-control" placeholder="End Year (e.g., 2078)"
+                value="{{ end_year }}">
+            {% endif %}
+            
+    
+            <button type="submit" class="btn btn-primary mt-3">Generate Chart</button>
+        
+        </form>
+    
+        <!-- Chart Container -->
+        <div class="chart-container">
+            {% if chart_type == 'programme_by_pass_fail' and charts.programme_by_pass_fail %}
+            <img src="data:image/png;base64,{{ charts.programme_by_pass_fail }}" alt="Programme Pass/Fail Chart">
+            {% elif chart_type == 'subject_pass_fail' and charts.subject_pass_fail %}
+            <img src="data:image/png;base64,{{ charts.subject_pass_fail }}" alt="Subject Pass/Fail Chart">
+            {% elif chart_type == 'total_students_pass_fail' and charts.total_students_pass_fail %}
+            <img src="data:image/png;base64,{{ charts.total_students_pass_fail }}" alt="Total Students Pass/Fail Chart">
+            {% elif chart_type == 'student_ranking' and charts.student_ranking %}
+            <img src="data:image/png;base64,{{ charts.student_ranking }}" alt="Rank of Students Chart">
+            {% elif chart_type == 'pass_percentage_over_time' and charts.pass_percentage_over_time %}
+            <img src="data:image/png;base64,{{ charts.pass_percentage_over_time }}" alt="Pass Percentage Trend Chart">
+            {% elif chart_type == 'subject_average_marks' and charts.subject_average_marks %}
+            <img src="data:image/png;base64,{{ charts.subject_average_marks }}" alt="Subject Average Marks Chart">
+            {% elif chart_type == 'grade_distribution' and charts.grade_distribution %}
+            <img src="data:image/png;base64,{{ charts.grade_distribution }}" alt="Grade Distribution Chart">
+            {% elif chart_type == 'assessment_vs_final' and charts.assessment_vs_final %}
+            <img src="data:image/png;base64,{{ charts.assessment_vs_final }}" alt="Assessment Vs Final Comparision">
+            {% elif chart_type == 'year_over_year_subject_improvement' and charts.year_over_year_subject_improvement %}
+            <img src="data:image/png;base64,{{ charts.year_over_year_subject_improvement }}" alt="Year-over-Year Subject Improvement Chart">
+            {% else %}
+            
+            <p class="text-center text-danger">No chart data available. Please select valid options to generate a chart.</p>
+            {% endif %}
+        </div>
+    </div>
+    </body>
+    </html>

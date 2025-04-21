@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Analysis</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Student Analysis</h1>
+        <p>Student: {{ student_name }} (ID: {{ student_id }})</p>
+        <p>Programme: {{ programme }}</p>
+
+        <form method="get">
+            <label for="chart">Select Chart:</label>
+            <select id="chart" name="chart">
+                <option value="Student_Progression_Analysis" {% if chart_type == "Student_Progression_Analysis" %}selected{% endif %}>Student Progression Analysis</option>
+                <option value="early_warning_system" {% if chart_type == "early_warning_system" %}selected{% endif %}>Early Warning System - At-Risk Students</option>
+            </select>
+
+            <button type="submit" class="button">Analyze</button>
+        </form>
+        {% if chart_type == 'Student_Progression_Analysis' and charts.Student_Progression_Analysis %}
+            <h2>Student Progression Analysis</h2>
+            <img src="data:image/png;base64,{{ charts.Student_Progression_Analysis }}" alt="Student Progression Analysis">
+        {% else %}
+            <p>No data available for the selected criteria.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
